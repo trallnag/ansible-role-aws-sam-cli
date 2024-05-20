@@ -33,7 +33,7 @@
 - name: Set installed version
   ansible.builtin.set_fact:
     aws_sam_cli_installed_version: >-
-      {{ aws_sam_cli_get_installed_version.stdout | regex_search('.+\\..+\\..+') }}
+      {{ aws_sam_cli_get_installed_version.stdout | regex_search('.+\..+\..+') }}
 
 - name: Print installed version
   ansible.builtin.debug:
