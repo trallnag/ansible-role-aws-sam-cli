@@ -5,5 +5,3 @@
     - name: Import role
       ansible.builtin.import_role:
         name: "{{ playbook_dir }}"
-      vars:
-        aws_sam_cli_version: latest
