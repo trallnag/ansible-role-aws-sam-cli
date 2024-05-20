@@ -1,0 +1,4 @@
+__aws_sam_cli_packages:
+  - curl
+  - gnupg2
+  - unzip

@@ -1,0 +1,30 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: check-symlinks
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: trailing-whitespace
+
+  - repo: local
+    hooks:
+      - id: prettier
+        name: Prettier
+        language: node
+        entry: npx
+        args: [prettier, --write, --prose-wrap=always]
+        types_or: [markdown]
+
+      - id: ansible-lint
+        name: Ansible Lint
+        language: system
+        entry: poetry run ansible-lint
+        files: ^(meta|molecule|tasks|vars)/
+        types: [yaml]
+
+ci:
+  autofix_commit_msg: "ci(pre-commit): Apply hook auto fixes"
+  autoupdate_commit_msg: "ci(pre-commit): Apply hook rev updates"

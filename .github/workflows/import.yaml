@@ -1,0 +1,39 @@
+name: Import
+
+#
+# Import role to Ansible Galaxy
+#
+# Useful for performing the import without creating a new GitHub release.
+#
+
+on:
+  workflow_dispatch:
+
+jobs:
+  import:
+    name: Import
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: poetry
+
+      - name: Set up virtual env
+        run: poetry install
+
+      - name: Import to Ansible Galaxy
+        run: >-
+          ansible-galaxy role import
+          --server https://galaxy.ansible.com/api/
+          --token "${{ secrets.ANSIBLE_GALAXY_API_TOKEN }}"
+          --role-name aws_sam_cli
+          ${{ github.event.repository.owner.login }}
+          ${{ github.event.repository.name }}

@@ -1,0 +1,52 @@
+name: Pre-commit
+
+#
+# Run pre-commit hooks and commit fixes.
+#
+# - https://pre-commit.ci/lite.html
+# - https://github.com/pre-commit-ci/lite-action
+# - https://github.com/apps/pre-commit-ci-lite
+#
+# Relies on the pre-commit.ci lite GitHub app to be configured with the repo.
+#
+# Why is the non-lite pre-commit.ci not used instead? It does not support local
+# hooks which are heavily used within this project.
+#
+# Unlike the full version, lite does not perform automatic upgrades of hooks.
+#
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [master, dev]
+  schedule:
+    - cron: 1 2 3 * * # Every third day of month at 02:01.
+
+jobs:
+  pre-commit:
+    name: Pre-commit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: poetry
+
+      - name: Set up virtual env
+        run: poetry install
+
+      - name: Set up pre-commit
+        uses: pre-commit/action@v3.0.1
+
+      - uses: pre-commit-ci/lite-action@v1.0.2
+        if: always()
+        with:
+          msg: "ci(pre-commit): Apply hook auto fixes"

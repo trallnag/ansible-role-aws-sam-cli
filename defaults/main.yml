@@ -1,0 +1,3 @@
+aws_sam_cli_version: present
+aws_sam_cli_bin_dir: /usr/local/bin
+aws_sam_cli_install_dir: /opt/aws-sam-cli

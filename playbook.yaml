@@ -1,0 +1,9 @@
+- name: Test
+  hosts: localhost
+  gather_facts: true
+  tasks:
+    - name: Import role
+      ansible.builtin.import_role:
+        name: "{{ playbook_dir }}"
+      vars:
+        aws_sam_cli_version: latest

@@ -1,0 +1,26 @@
+argument_specs:
+  main:
+    short_description: Main entry point
+    options:
+      aws_sam_cli_version:
+        required: false
+        type: str
+        default: present
+        description:
+          - Version of the AWS SAM CLI to install. For example `1.116.0`.
+          - Use special value `present` to install latest version once.
+          - Use special value `latest` to always install latest version.
+
+      aws_sam_cli_bin_dir:
+        required: false
+        type: str
+        default: /usr/local/bin
+        description:
+          - Bin directory. Used for `--bin-dir` parameter.
+
+      aws_sam_cli_install_dir:
+        required: false
+        type: str
+        default: /opt/aws-sam-cli
+        description:
+          - Install directory. Used for `--install-dir` parameter.

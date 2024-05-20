@@ -1,0 +1,18 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = false
+name = "ansible-role-aws-sam-cli"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+ansible = "^9.5"
+docker = "^7.0"
+molecule = "^24.2"
+
+ansible-lint = { version = "^24.2", markers = "platform_system != 'Windows'" }
+
+molecule-plugins = { version = "^23.5", extras = ["docker"] }

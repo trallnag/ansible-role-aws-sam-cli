@@ -1,0 +1,171 @@
+- name: Set CPU arch mapping
+  ansible.builtin.set_fact:
+    aws_sam_cli_cpu_arch_mapping:
+      x86_64: x86_64
+      aarch64: arm64
+
+- name: Include OS-specific variables
+  ansible.builtin.include_vars: "{{ ansible_os_family }}.yml"
+
+- name: Set packages to install
+  when: aws_sam_cli_packages is not defined
+  ansible.builtin.set_fact:
+    aws_sam_cli_packages: "{{ __aws_sam_cli_packages | list }}"
+
+- name: Install dependencies
+  ansible.builtin.package:
+    name: "{{ aws_sam_cli_packages }}"
+    state: present
+  become: true
+
+- name: Get installed version
+  ansible.builtin.shell:
+    cmd: |
+      set -euo pipefail
+      export PATH=/usr/local/bin:$PATH
+      if command -v sam &> /dev/null; then
+        sam --version | sed -n -E 's/.*version (.+)/\1/p'
+      fi
+    executable: /usr/bin/bash
+  register: aws_sam_cli_get_installed_version
+  changed_when: false
+
+- name: Set installed version
+  ansible.builtin.set_fact:
+    aws_sam_cli_installed_version: >-
+      {{ aws_sam_cli_get_installed_version.stdout | regex_search('.+\\..+\\..+') }}
+
+- name: Print installed version
+  ansible.builtin.debug:
+    var: aws_sam_cli_installed_version
+
+- name: Set empty archive URL
+  ansible.builtin.set_fact:
+    aws_sam_cli_archive_url: ""
+
+- name: Set archive URL for target exact
+  when: >-
+    aws_sam_cli_version not in ["present", "latest"]
+    and aws_sam_cli_installed_version != aws_sam_cli_version
+  ansible.builtin.set_fact:
+    aws_sam_cli_archive_url: "\
+      https://github.com/aws/aws-sam-cli/releases/download/v{{ aws_sam_cli_version }}\
+      /aws-sam-cli-linux-{{ aws_sam_cli_cpu_arch_mapping[ansible_architecture] }}.zip"
+
+- name: Set archive URL for target present
+  when: aws_sam_cli_version == "present" and aws_sam_cli_installed_version == ""
+  ansible.builtin.set_fact:
+    aws_sam_cli_archive_url: "\
+      https://github.com/aws/aws-sam-cli/releases/latest/download\
+      /aws-sam-cli-linux-{{ aws_sam_cli_cpu_arch_mapping[ansible_architecture] }}.zip"
+
+- name: Handle latest
+  when: aws_sam_cli_version == "latest"
+  block:
+    - name: Get latest version
+      ansible.builtin.shell:
+        cmd: |
+          set -euo pipefail
+          curl --silent --fail-with-body {{ aws_sam_cli_github }} \
+            | sed -n -E 's/.*"tag_name": "(.+)",.*/\1/p' \
+            | cut -c2-
+        executable: /usr/bin/bash
+      vars:
+        aws_sam_cli_github: https://api.github.com/repos/aws/aws-sam-cli/releases/latest
+      register: aws_sam_cli_get_latest_version
+      changed_when: false
+
+    - name: Set latest version
+      ansible.builtin.set_fact:
+        aws_sam_cli_latest_version: >-
+          {{ aws_sam_cli_get_latest_version.stdout | regex_search(".+\..+\..+") }}
+
+    - name: Print latest version
+      ansible.builtin.debug:
+        var: aws_sam_cli_latest_version
+
+    - name: Set archive URL for target latest
+      when: aws_sam_cli_installed_version != aws_sam_cli_latest_version
+      ansible.builtin.set_fact:
+        aws_sam_cli_archive_url: "\
+          https://github.com/aws/aws-sam-cli/releases/latest/download\
+          /aws-sam-cli-linux-{{ aws_sam_cli_cpu_arch_mapping[ansible_architecture] }}.zip"
+
+- name: Print archive URL
+  ansible.builtin.debug:
+    var: aws_sam_cli_archive_url
+
+- name: Install
+  when: aws_sam_cli_archive_url != ""
+  become: true
+  block:
+    - name: Uninstall
+      ansible.builtin.file:
+        path: "{{ item }}"
+        state: absent
+        force: true
+      loop:
+        - "{{ aws_sam_cli_bin_dir }}/sam"
+        - "{{ aws_sam_cli_install_dir }}"
+
+    - name: Create tmp dir
+      ansible.builtin.tempfile:
+        state: directory
+      register: aws_sam_cli_tmp_dir
+
+    - name: Download archive
+      ansible.builtin.get_url:
+        url: "{{ aws_sam_cli_archive_url }}"
+        dest: "{{ aws_sam_cli_tmp_dir.path }}/aws-sam-cli.zip"
+        force: true
+        mode: u=rw,g=r,o=r
+      register: aws_sam_cli_download_archive
+
+    - name: Download signature
+      ansible.builtin.get_url:
+        url: "{{ aws_sam_cli_archive_url }}.sig"
+        dest: "{{ aws_sam_cli_tmp_dir.path }}/aws-sam-cli.zip.sig"
+        force: true
+        mode: u=rw,g=r,o=r
+      register: aws_sam_cli_download_signature
+
+    - name: Place public key
+      ansible.builtin.copy:
+        src: aws-sam-cli-public-key.asc
+        dest: "{{ aws_sam_cli_tmp_dir.path }}"
+        mode: u=rw,g=r,o=r
+      register: aws_sam_cli_public_key
+
+    - name: Verify integrity
+      ansible.builtin.shell:
+        cmd: |
+          set -euo pipefail
+
+          export GNUPGHOME="{{ aws_sam_cli_tmp_dir.path }}/gnupg"
+          mkdir -m 0700 "$GNUPGHOME"
+
+          gpg --yes --import "{{ aws_sam_cli_public_key.dest }}"
+
+          gpg --verify \
+            {{ aws_sam_cli_download_signature.dest }} \
+            {{ aws_sam_cli_download_archive.dest }}
+        executable: /usr/bin/bash
+      changed_when: false
+
+    - name: Unzip archive
+      ansible.builtin.unarchive:
+        src: "{{ aws_sam_cli_download_archive.dest }}"
+        dest: "{{ aws_sam_cli_tmp_dir.path }}"
+        remote_src: true
+      register: aws_sam_cli_unzip_archive
+
+    - name: Install
+      ansible.builtin.command: >-
+        {{ aws_sam_cli_unzip_archive.dest }}/install
+        --bin-dir {{ aws_sam_cli_bin_dir }}
+        --install-dir {{ aws_sam_cli_install_dir }}
+      changed_when: true
+
+    - name: Test executable
+      ansible.builtin.command: sam --version
+      changed_when: false

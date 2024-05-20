@@ -1,0 +1,74 @@
+name: Release
+
+#
+# Release new version.
+#
+# Make sure to prepare project for a new release (see docs for more). After
+# publishing role to Ansible Galaxy a GitHub release is drafted.
+#
+# Requires GALAXY_API_KEY secret to be present.
+#
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - v*.*.*
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Poetry
+        run: pipx install poetry
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: poetry
+
+      - name: Set up virtual env
+        run: poetry install
+
+      - name: Import to Ansible Galaxy
+        run: >-
+          ansible-galaxy role import
+          --server https://galaxy.ansible.com/api/
+          --token "${{ secrets.ANSIBLE_GALAXY_API_TOKEN }}"
+          --role-name aws_sam_cli
+          ${{ github.event.repository.owner.login }}
+          ${{ github.event.repository.name }}
+
+      - name: Determine release version
+        run: |
+          release_version=$(echo "${GITHUB_REF#refs/*/}" | cut -c 2-)
+          echo "RELEASE_VERSION=$release_version" >> $GITHUB_ENV
+
+      - name: Determine release name
+        run: |
+          release_name="${{ env.RELEASE_VERSION }} / $(date +%Y-%m-%d)"
+          echo "RELEASE_NAME=$release_name" >> $GITHUB_ENV
+
+      - name: Install mdformat
+        run: pip install mdformat
+
+      - name: Extract release notes
+        run: |
+          mkdir -p tmp
+          scripts/extract-notes.py --input CHANGELOG.md --output tmp/release.md
+          mdformat --wrap=10000 tmp/release.md
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ env.RELEASE_NAME }}
+          body_path: tmp/release.md
+          draft: true
