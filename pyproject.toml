@@ -10,7 +10,7 @@ name = "ansible-role-aws-sam-cli"
 python = "^3.12"
 
 ansible = "^9.5"
-docker = "^7.0"
+docker = "^7.1"
 molecule = "^24.2"
 
 ansible-lint = { version = "^24.2", markers = "platform_system != 'Windows'" }
