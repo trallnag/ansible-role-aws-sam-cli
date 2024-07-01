@@ -9,7 +9,7 @@ name = "ansible-role-aws-sam-cli"
 [tool.poetry.dependencies]
 python = "^3.12"
 
-ansible = "^9.5"
+ansible = "^10.1"
 docker = "^7.0"
 molecule = "^24.2"
 
