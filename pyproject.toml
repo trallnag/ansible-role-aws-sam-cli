@@ -13,6 +13,6 @@ ansible = "^9.5"
 docker = "^7.0"
 molecule = "^24.2"
 
-ansible-lint = { version = "^24.2", markers = "platform_system != 'Windows'" }
+ansible-lint = { version = "^24.6", markers = "platform_system != 'Windows'" }
 
 molecule-plugins = { version = "^23.5", extras = ["docker"] }
