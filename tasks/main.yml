@@ -48,12 +48,24 @@
     aws_sam_cli_version not in ["present", "latest"]
     and aws_sam_cli_installed_version != aws_sam_cli_version
   ansible.builtin.set_fact:
-    aws_sam_cli_archive_url: "https://github.com/aws/aws-sam-cli/releases/download/v{{ aws_sam_cli_version }}/aws-sam-cli-linux-{{ aws_sam_cli_cpu_arch_mapping[ansible_architecture] }}.zip"
+    aws_sam_cli_archive_url: "{{ aws_sam_cli_archive_url_parts | join }}"
+  vars:
+    aws_sam_cli_archive_url_parts:
+      - "https://github.com/aws/aws-sam-cli/releases/download/v"
+      - "{{ aws_sam_cli_version }}"
+      - "/aws-sam-cli-linux-"
+      - "{{ aws_sam_cli_cpu_arch_mapping[ansible_architecture] }}"
+      - ".zip"
 
 - name: Set archive URL for target present
   when: aws_sam_cli_version == "present" and aws_sam_cli_installed_version == ""
   ansible.builtin.set_fact:
-    aws_sam_cli_archive_url: "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-{{ aws_sam_cli_cpu_arch_mapping[ansible_architecture] }}.zip"
+    aws_sam_cli_archive_url: "{{ aws_sam_cli_archive_url_parts | join }}"
+  vars:
+    aws_sam_cli_archive_url_parts:
+      - "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-"
+      - "{{ aws_sam_cli_cpu_arch_mapping[ansible_architecture] }}"
+      - ".zip"
 
 - name: Handle latest
   when: aws_sam_cli_version == "latest"
@@ -83,7 +95,12 @@
     - name: Set archive URL for target latest
       when: aws_sam_cli_installed_version != aws_sam_cli_latest_version
       ansible.builtin.set_fact:
-        aws_sam_cli_archive_url: "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-{{ aws_sam_cli_cpu_arch_mapping[ansible_architecture] }}.zip"
+        aws_sam_cli_archive_url: "{{ aws_sam_cli_archive_url_parts | join }}"
+      vars:
+        aws_sam_cli_archive_url_parts:
+          - "https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-"
+          - "{{ aws_sam_cli_cpu_arch_mapping[ansible_architecture] }}"
+          - ".zip"
 
 - name: Print archive URL
   ansible.builtin.debug:

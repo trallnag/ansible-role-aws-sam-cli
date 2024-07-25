@@ -66,7 +66,7 @@ Ensure that the new version has been imported to Ansible Galaxy
 [here](https://galaxy.ansible.com/trallnag/aws_sam_cli).
 
 Go to the release page of this project on GitHub
-[here](https://github.com/trallnag/ansible-role-aws-sam-cli/releases) and review the
-automatically created release draft.
+[here](https://github.com/trallnag/ansible-role-aws-sam-cli/releases) and review
+the automatically created release draft.
 
 Publish the release draft.
