@@ -2,29 +2,82 @@ repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.6.0
     hooks:
+      # Git style.
       - id: check-added-large-files
+        name: Check large files
+
       - id: check-merge-conflict
-      - id: check-symlinks
+        name: Check merge conflicts
+
+      - id: check-vcs-permalinks
+        name: Check VCS permalinks
+
+      - id: forbid-new-submodules
+        name: Check new submodules
+
+      # Common errors.
+      - id: check-executables-have-shebangs
+        name: Check executable shebangs
+
+      - id: check-yaml
+        name: Check YAML files
+        args: [--unsafe]
+
       - id: end-of-file-fixer
+        name: Fix end of files
+
       - id: fix-byte-order-marker
+        name: Fix byte order markers
+
       - id: trailing-whitespace
+        name: Fix trailing whitespace
+        args: [--markdown-linebreak-ext=md]
+
+      # Cross platform.
+      - id: check-case-conflict
+        name: Check case conflicts
+
+      - id: mixed-line-ending
+        name: Fix mixed line endings
+        args: [--fix=lf]
+
+      # Security.
+      - id: detect-aws-credentials
+        name: Detect AWS credentials
+        args: [--allow-missing-credentials]
+
+      - id: detect-private-key
+        name: Detect private keys
+
+  - repo: https://github.com/rbubley/mirrors-prettier
+    rev: v3.3.3
+    hooks:
+      - id: prettier
+        name: Format Markdown files
+        args: [--prose-wrap=always]
+        types: [markdown]
+
+      - id: prettier
+        name: Format JSON files
+        types: [json]
+
+  - repo: https://github.com/google/yamlfmt
+    rev: v0.13.0
+    hooks:
+      - id: yamlfmt
+        name: Format YAML files
 
   - repo: local
     hooks:
-      - id: prettier
-        name: Prettier
-        language: node
-        entry: npx
-        args: [prettier, --write, --prose-wrap=always]
-        types_or: [markdown]
+      - id: check-copier-rejection
+        name: Check Copier rejection files
+        entry: Found Copier rejection files.
+        language: fail
+        files: ^.*\.rej$
 
       - id: ansible-lint
-        name: Ansible Lint
+        name: Lint Ansible files
         language: system
         entry: poetry run ansible-lint
         files: ^(meta|molecule|tasks|vars)/
         types: [yaml]
-
-ci:
-  autofix_commit_msg: "ci(pre-commit): Apply hook auto fixes"
-  autoupdate_commit_msg: "ci(pre-commit): Apply hook rev updates"

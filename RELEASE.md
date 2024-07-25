@@ -24,9 +24,8 @@ release to a new section with an appropriate title for the release. Should the
 Commit the changes. Make sure to sign the commit:
 
 ```shell
-git add CHANGELOG.md
+git add .
 git commit -S -m "chore: Prepare release v$VERSION"
-git log --show-signature -1
 ```
 
 Push changes:
@@ -43,7 +42,6 @@ Tag the latest commit with an annotated and signed tag:
 
 ```shell
 git tag -s v$VERSION -m ""
-git show v$VERSION
 ```
 
 Make sure that the tree looks good:
@@ -65,10 +63,10 @@ which will import the role to Ansible Galaxy and create a release draft.
 ## Wrap Up
 
 Ensure that the new version has been imported to Ansible Galaxy
-[here](https://galaxy.ansible.com/trallnag/aws_ssm_plugin).
+[here](https://galaxy.ansible.com/trallnag/aws_sam_cli).
 
 Go to the release page of this project on GitHub
-[here](https://github.com/trallnag/ansible-role-aws-sam-cli/releases) and review
-the automatically created release draft.
+[here](https://github.com/trallnag/ansible-role-aws-sam-cli/releases) and review the
+automatically created release draft.
 
 Publish the release draft.

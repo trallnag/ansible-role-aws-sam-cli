@@ -1,0 +1,77 @@
+version: "3"
+
+tasks:
+  default:
+    cmds:
+      - task: init
+      - task: format
+      - task: lint
+      - task: test
+
+  init:
+    desc: Initialize development environment.
+    cmds:
+      - poetry self add poetry-plugin-up
+      - poetry install
+      - pre-commit install --install-hooks
+      - pre-commit install --install-hooks --hook-type commit-msg
+
+  update:
+    desc: Update development environment.
+    cmds:
+      - poetry self update
+      - poetry up --latest
+      - pre-commit autoupdate
+
+  format:
+    desc: Run formatters.
+    cmds:
+      - cmd: pre-commit run --all-files {{ .ITEM }} || true
+        for:
+          - end-of-file-fixer
+          - fix-byte-order-marker
+          - trailing-whitespace
+          - mixed-line-ending
+          - prettier
+          - yamlfmt
+
+  lint:
+    desc: Run linters.
+    cmds:
+      - cmd: pre-commit run --all-files {{ .ITEM }} || true
+        for:
+          - check-added-large-files
+          - check-merge-conflict
+          - check-vcs-permalinks
+          - forbid-new-submodules
+          - check-executables-have-shebangs
+          - check-yaml
+          - check-case-conflict
+          - detect-aws-credentials
+          - detect-private-key
+          - check-copier-rejection
+      - poetry run ansible-lint
+
+  test:
+    desc: Run tests.
+    vars:
+      scenario: '{{ .scenario | default "all" }}'
+    cmds:
+      - >-
+        {{- if eq .scenario "all" -}}
+          poetry run molecule test --all
+        {{- else -}}
+          poetry run molecule test -s {{ .scenario }}
+        {{- end -}}
+
+  run:
+    desc: Run role against localhost.
+    cmds:
+      - poetry run ansible-playbook playbook.yaml
+
+  extract-release-notes:
+    desc: Extract release notes.
+    cmds:
+      - mkdir -p tmp
+      - scripts/extract-release-notes.py --input CHANGELOG.md --output tmp/release.md
+      - mdformat --wrap=10000 tmp/release.md

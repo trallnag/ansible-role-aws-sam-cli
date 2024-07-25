@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Usage: extract-notes.py [options...]
+"""Usage: extract-release-notes.py [options...]
 
 Extract notes for the latest release from a changelog file. Used to get text
 for GitHub Release. Changelog must follow a specific format for this to work.
@@ -10,8 +10,8 @@ Options:
   --output OUTPUT  File where extraction should be written to.
 
 Examples:
-  extract-notes.py --output tmp/notes.md
-  extract-notes.py --input CHANGELOG.md
+  extract-release-notes.py --output tmp/notes.md
+  extract-release-notes.py --input CHANGELOG.md
 """
 
 import argparse

@@ -1,22 +1,15 @@
 # Pre-commit
 
-Used for managing Git hooks. Must be installed globally on the respective
-system. As it is written in Python, for example
-[`pipx`](https://github.com/pypa/pipx) can be used to install it.
+Used for managing Git hooks. Must be installed globally.
 
 - [pre-commit.com](https://pre-commit.com)
 - [github.com/pre-commit/pre-commit](https://github.com/pre-commit/pre-commit)
 
-Whenever this repository is initially cloned, the following should be executed:
+As it is written in Python, for example [`pipx`](https://github.com/pypa/pipx)
+can be used to install it.
 
-```shell
-pre-commit install --install-hooks
-pre-commit install --install-hooks --hook-type commit-msg
-```
-
-Pre-commit should now run on every commit.
-
-It is configured via [`.pre-commit-config.yaml`](../../.pre-commit-config.yaml).
+Pre-commit is configured via
+[`.pre-commit-config.yaml`](../../.pre-commit-config.yaml).
 
 ## Housekeeping
 
