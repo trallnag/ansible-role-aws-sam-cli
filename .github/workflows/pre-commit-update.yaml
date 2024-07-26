@@ -1,4 +1,4 @@
-name: Pre-Commit Updates
+name: Pre-Commit Update
 
 #
 # Updates pre-commit hooks to the latest available versions.
@@ -9,22 +9,18 @@ name: Pre-Commit Updates
 on:
   workflow_dispatch:
   schedule:
-    - cron: 34 12 4 * * # Runs at 12:34 (UTC), on day 4 of the month.
+    - cron: 34 12 4 * * # At 12:34 (UTC) on day-of-month 4.
 
 jobs:
-  pre-commit-updates:
-    name: Pre-Commit Updates
+  pre-commit-update:
+    name: Pre-Commit Update
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Add entries to PATH
-        run: |
-          echo "$HOME/.local/bin" | tee -a "$GITHUB_PATH"
 
       - name: Install pre-commit
         run: pipx install pre-commit

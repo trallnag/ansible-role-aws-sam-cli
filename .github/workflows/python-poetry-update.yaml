@@ -1,7 +1,8 @@
-name: Poetry Updates
+name: Python Poetry Update
 
 #
-# Updates Python dependencies to the latest available versions.
+# Updates Python dependencies managed with Poetry to the latest available
+# and compatible versions.
 #
 # Opens a pull request if any updates are available.
 #
@@ -9,25 +10,21 @@ name: Poetry Updates
 on:
   workflow_dispatch:
   schedule:
-    - cron: 34 12 5 * * # Runs at 12:34 (UTC), on day 5 of the month.
+    - cron: 34 12 5 * * # At 12:34 (UTC) on day-of-month 5.
 
 env:
   PYTHON_VERSION: ""
 
 jobs:
-  poetry-updates:
-    name: Poetry Updates
+  python-poetry-update:
+    name: Python Poetry Update
+    runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
-    runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Add entries to PATH
-        run: |
-          echo "$HOME/.local/bin" | tee -a "$GITHUB_PATH"
 
       - name: Determine PYTHON_VERSION
         run: |
@@ -45,13 +42,13 @@ jobs:
       - name: Install Poetry plugin up
         run: poetry self add poetry-plugin-up
 
-      - name: Update deps to latest available
+      - name: Update dependencies
         run: poetry up --latest
 
       - name: Create pull request
         uses: peter-evans/create-pull-request@v6
         with:
-          branch: poetry
-          title: "build(deps): Update Python packages"
-          commit-message: "build(deps): Update Python packages"
+          branch: python-poetry-update
+          title: "build(deps): Update Python package(s)"
+          commit-message: "build(deps): Update Python package(s)"
           delete-branch: true

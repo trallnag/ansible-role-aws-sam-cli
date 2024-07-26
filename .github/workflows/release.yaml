@@ -30,10 +30,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Add entries to PATH
-        run: |
-          echo "$HOME/.local/bin" | tee -a "$GITHUB_PATH"
-
       - name: Determine PYTHON_VERSION
         run: |
           PYTHON_VERSION=$(./scripts/get-python-version.sh)
