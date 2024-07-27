@@ -41,6 +41,6 @@ jobs:
           poetry run ansible-galaxy role import
           --server https://galaxy.ansible.com/api/
           --token "${{ secrets.ANSIBLE_GALAXY_API_TOKEN }}"
-          --role-name aws_cli
+          --role-name aws_sam_cli
           ${{ github.event.repository.owner.login }}
           ${{ github.event.repository.name }}
