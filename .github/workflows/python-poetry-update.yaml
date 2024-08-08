@@ -10,7 +10,7 @@ name: Python Poetry Update
 on:
   workflow_dispatch:
   schedule:
-    - cron: 34 12 5 * * # At 12:34 (UTC) on day-of-month 5.
+    - cron: 34 12 5 * *
 
 env:
   PYTHON_VERSION: ""

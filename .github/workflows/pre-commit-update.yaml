@@ -9,7 +9,7 @@ name: Pre-Commit Update
 on:
   workflow_dispatch:
   schedule:
-    - cron: 34 12 4 * * # At 12:34 (UTC) on day-of-month 4.
+    - cron: 34 12 4 * *
 
 jobs:
   pre-commit-update:

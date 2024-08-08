@@ -12,7 +12,7 @@ on:
   push:
     branches: [master, dev]
   schedule:
-    - cron: 34 12 3 * * # Runs at 12:34 (UTC), on day 3 of the month.
+    - cron: 34 12 3 * *
 
 env:
   CACHE_KEY_SUFFIX: "0"
