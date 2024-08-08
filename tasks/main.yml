@@ -129,7 +129,7 @@
         url: "{{ aws_sam_cli_archive_url }}"
         dest: "{{ aws_sam_cli_tmp_dir.path }}/aws-sam-cli.zip"
         force: true
-        mode: u=rw,g=r,o=r
+        mode: u=rw,g=,o=
       register: aws_sam_cli_download_archive
 
     - name: Download signature
@@ -137,14 +137,14 @@
         url: "{{ aws_sam_cli_archive_url }}.sig"
         dest: "{{ aws_sam_cli_tmp_dir.path }}/aws-sam-cli.zip.sig"
         force: true
-        mode: u=rw,g=r,o=r
+        mode: u=rw,g=,o=
       register: aws_sam_cli_download_signature
 
     - name: Place public key
       ansible.builtin.copy:
         src: aws-sam-cli-public-key.asc
         dest: "{{ aws_sam_cli_tmp_dir.path }}"
-        mode: u=rw,g=r,o=r
+        mode: u=rw,g=,o=
       register: aws_sam_cli_public_key
 
     - name: Verify integrity
