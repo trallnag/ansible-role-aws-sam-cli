@@ -10,7 +10,7 @@
           if command -v sam &> /dev/null; then
             sam --version | sed -n -E 's/.*version (.+)/\1/p'
           fi
-        executable: /bin/bash
+        executable: /usr/bin/bash
       register: get_installed_version
       changed_when: false
 

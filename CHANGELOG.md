@@ -9,7 +9,6 @@ and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
 ### Changed
 
-- Changed executable for shell tasks from `/usr/bin/bash` to `/bin/bash`.
 - Switched permissions of temporary artifacts from `u=rw,g=r,o=r` to
   `u=rw,g=,o=`.
 
