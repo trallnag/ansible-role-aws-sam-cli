@@ -19,6 +19,9 @@ repos:
       - id: check-executables-have-shebangs
         name: Check executable shebangs
 
+      - id: check-shebang-scripts-are-executable
+        name: Check shebang scripts are executable
+
       - id: check-yaml
         name: Check YAML files
         args: [--unsafe]

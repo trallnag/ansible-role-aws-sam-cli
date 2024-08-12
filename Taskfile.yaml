@@ -9,23 +9,25 @@ tasks:
       - task: test
 
   init:
-    desc: Initialize development environment.
+    desc: Initialize environment.
     cmds:
-      - poetry self add poetry-plugin-up
-      - poetry install
       - pre-commit install --install-hooks
       - pre-commit install --install-hooks --hook-type commit-msg
+      - poetry self add poetry-plugin-up
+      - poetry install
 
   update:
-    desc: Update development environment.
+    desc: Update dependencies.
     cmds:
+      - pre-commit autoupdate
       - poetry self update
       - poetry self add poetry-plugin-up@latest
       - poetry up --latest
-      - pre-commit autoupdate
 
   format:
-    desc: Run formatters.
+    desc: >-
+      Run formatters.
+      Used in GitHub Actions workflow(s).
     cmds:
       - cmd: x="pre-commit run --all-files {{ .ITEM }}" && ($x || $x)
         for:
@@ -37,7 +39,9 @@ tasks:
           - yamlfmt
 
   lint:
-    desc: Run linters.
+    desc: >-
+      Run linters.
+      Used in GitHub Actions workflow(s).
     cmds:
       - cmd: pre-commit run --all-files {{ .ITEM }}
         for:
@@ -46,6 +50,7 @@ tasks:
           - check-vcs-permalinks
           - forbid-new-submodules
           - check-executables-have-shebangs
+          - check-shebang-scripts-are-executable
           - check-yaml
           - check-case-conflict
           - detect-aws-credentials
@@ -54,7 +59,9 @@ tasks:
       - poetry run ansible-lint
 
   test:
-    desc: Run tests.
+    desc: >-
+      Run tests.
+      Used in GitHub Actions workflow(s).
     vars:
       scenario: '{{ .scenario | default "all" }}'
     cmds:
@@ -71,7 +78,9 @@ tasks:
       - poetry run ansible-playbook playbook.yaml
 
   extract-release-notes:
-    desc: Extract release notes.
+    desc: >-
+      Extract release notes.
+      Used in GitHub Actions workflow(s).
     cmds:
       - mkdir -p tmp
       - scripts/extract-release-notes.py --input CHANGELOG.md --output tmp/release.md
