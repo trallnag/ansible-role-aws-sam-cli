@@ -693,13 +693,13 @@ files = [
 
 [[package]]
 name = "molecule"
-version = "24.8.0"
+version = "24.9.0"
 description = "Molecule aids in the development and testing of Ansible roles"
 optional = false
 python-versions = ">=3.10"
 files = [
-    {file = "molecule-24.8.0-py3-none-any.whl", hash = "sha256:8e748ec0cf18e7ef718af2caf18e3ef77dff54f5be1ecee9ffaa93095f301cf5"},
-    {file = "molecule-24.8.0.tar.gz", hash = "sha256:140738904e9f17815780568ac408c9f73bb9e2ac721e34685a359e6d3507e677"},
+    {file = "molecule-24.9.0-py3-none-any.whl", hash = "sha256:ecb15e4c6b66e208e0621e19b100d471a06cd114371f46449620e7eda3ec0a62"},
+    {file = "molecule-24.9.0.tar.gz", hash = "sha256:8548eda13c31a1ea41ba0786b29dde466cfb812617c25792151335b17a410f63"},
 ]
 
 [package.dependencies]
@@ -1279,4 +1279,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "51973405f8e0e337b4e55f4f8532895099cac4ca07d769b3f861462d4e78f216"
+content-hash = "218d27a7e81267628b87cf110b81642de17819e784f46952f2a797b9d93bc9d2"

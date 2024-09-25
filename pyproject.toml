@@ -11,7 +11,7 @@ python = "^3.12"
 
 ansible = "^10.3.0"
 docker = "^7.1.0"
-molecule = "^24.8.0"
+molecule = "^24.9.0"
 
 ansible-lint = { version = "^24.7.0", markers = "platform_system != 'Windows'" }
 
