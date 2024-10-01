@@ -46,7 +46,7 @@ jobs:
         run: poetry up --latest
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
           branch: python-poetry-update
           title: "build(deps): Update Python package(s)"
