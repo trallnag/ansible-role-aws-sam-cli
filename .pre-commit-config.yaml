@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.6.0
+    rev: v5.0.0
     hooks:
       # Git style.
       - id: check-added-large-files
@@ -53,7 +53,7 @@ repos:
         name: Detect private keys
 
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.3.3
+    rev: v3.6.2
     hooks:
       - id: prettier
         name: Format Markdown files
@@ -65,7 +65,7 @@ repos:
         types: [json]
 
   - repo: https://github.com/google/yamlfmt
-    rev: v0.13.0
+    rev: v0.17.2
     hooks:
       - id: yamlfmt
         name: Format YAML files
