@@ -1,0 +1,56 @@
+{
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    ':configMigration',
+    'config:recommended',
+    'docker:enableMajor',
+    'docker:pinDigests',
+    'helpers:pinGitHubActionDigests',
+    'schedule:monthly',
+  ],
+  commitBody: 'Co-authored-by: Tim Schwenke <tim@trallnag.com>',
+  commitMessageLowerCase: 'never',
+  minimumReleaseAge: '21 days',
+  semanticCommits: 'enabled',
+  prHourlyLimit: 10,
+  lockFileMaintenance: {
+    enabled: true,
+  },
+  'pre-commit': {
+    enabled: true,
+    prBodyNotes: [
+      '',
+    ],
+  },
+  mise: {
+    enabled: false,
+  },
+  packageRules: [
+    {
+      description: 'Group official GitHub Actions.',
+      groupName: 'GitHub Actions (official)',
+      groupSlug: 'github-actions-official',
+      matchUpdateTypes: [
+        'digest',
+      ],
+      matchManagers: [
+        'github-actions',
+      ],
+      matchPackageNames: [
+        'actions/**',
+      ],
+    },
+  ],
+  customManagers: [
+    {
+      customType: 'regex',
+      description: 'Manage tools in mise config file.',
+      managerFilePatterns: [
+        'mise.toml',
+      ],
+      matchStrings: [
+        '# Renovate: datasource=(?<datasource>.+) packageName=(?<packageName>.+)\\n.+ = "(?<currentValue>.+)"\\n',
+      ],
+    },
+  ],
+}

@@ -1,3 +1,3 @@
-_commit: v13
+_commit: v15
 _src_path: git@github.com:trallnag/copier-template-ansible-role.git
 role_name: aws_sam_cli

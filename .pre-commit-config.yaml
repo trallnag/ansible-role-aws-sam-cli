@@ -4,83 +4,109 @@ repos:
     hooks:
       # Git style.
       - id: check-added-large-files
+        alias: check-added-large-files (check, task)
         name: Check large files
 
       - id: check-merge-conflict
+        alias: check-merge-conflict (check, task)
         name: Check merge conflicts
 
       - id: check-vcs-permalinks
+        alias: check-vcs-permalinks (check, task)
         name: Check VCS permalinks
 
       - id: forbid-new-submodules
+        alias: forbid-new-submodules (check, task)
         name: Check new submodules
 
       # Common errors.
+      - id: destroyed-symlinks
+        alias: destroyed-symlinks (check, task)
+        name: Check destroyed symlinks
+
       - id: check-executables-have-shebangs
-        name: Check executable shebangs
+        alias: check-executables-have-shebangs (check, task)
+        name: Check executables have shebangs
 
       - id: check-shebang-scripts-are-executable
+        alias: check-shebang-scripts-are-executable (check, task)
         name: Check shebang scripts are executable
 
       - id: check-yaml
+        alias: check-yaml (check, task)
         name: Check YAML files
         args: [--unsafe]
 
       - id: end-of-file-fixer
+        alias: end-of-file-fixer (fix, task)
         name: Fix end of files
 
       - id: fix-byte-order-marker
+        alias: fix-byte-order-marker (fix, task)
         name: Fix byte order markers
 
       - id: trailing-whitespace
+        alias: trailing-whitespace (fix, task)
         name: Fix trailing whitespace
         args: [--markdown-linebreak-ext=md]
 
       # Cross platform.
       - id: check-case-conflict
+        alias: check-case-conflict (check, task)
         name: Check case conflicts
 
       - id: mixed-line-ending
+        alias: mixed-line-ending (fix, task)
         name: Fix mixed line endings
         args: [--fix=lf]
 
       # Security.
       - id: detect-aws-credentials
+        alias: detect-aws-credentials (check, task)
         name: Detect AWS credentials
         args: [--allow-missing-credentials]
 
       - id: detect-private-key
+        alias: detect-private-key (check, task)
         name: Detect private keys
-
-  - repo: https://github.com/rbubley/mirrors-prettier
-    rev: v3.6.2
-    hooks:
-      - id: prettier
-        name: Format Markdown files
-        args: [--prose-wrap=always]
-        types: [markdown]
-
-      - id: prettier
-        name: Format JSON files
-        types: [json]
-
-  - repo: https://github.com/google/yamlfmt
-    rev: v0.17.2
-    hooks:
-      - id: yamlfmt
-        name: Format YAML files
 
   - repo: local
     hooks:
-      - id: check-copier-rejection
-        name: Check Copier rejection files
-        entry: Found Copier rejection files.
-        language: fail
-        files: ^.*\.rej$
+      - id: yamlfmt
+        alias: yamlfmt (fix, task)
+        name: Format YAML files with yamlfmt
+        language: system
+        entry: mise exec -- yamlfmt
+        types: [yaml]
+
+      - id: mdformat
+        alias: mdformat (fix)
+        name: Format Markdown files with mdformat
+        language: system
+        entry: mise exec -- mdformat
+        types: [markdown]
+
+      - id: shfmt
+        alias: shfmt (fix)
+        name: Format shell scripts with shfmt
+        language: system
+        require_serial: true
+        entry: mise exec -- shfmt --write
+        types: [bash, sh]
+
+      - id: shellcheck
+        alias: shellcheck (check)
+        name: Check shell scripts with ShellCheck
+        require_serial: true
+        language: system
+        entry: mise exec -- shellcheck
+        types: [bash, sh]
 
       - id: ansible-lint
-        name: Lint Ansible files
+        alias: ansible-lint (check)
+        name: Lint Ansible files with ansible-lint
+        require_serial: true
+        pass_filenames: false
+        always_run: true
         language: system
-        entry: poetry run ansible-lint
-        files: ^(meta|molecule|tasks|vars)/
-        types: [yaml]
+        entry: uv run ansible-lint

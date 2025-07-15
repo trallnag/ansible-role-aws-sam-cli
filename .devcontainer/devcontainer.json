@@ -1,0 +1,60 @@
+{
+  "name": "ansible-role-aws-sam-cli",
+
+  "workspaceFolder": "/workspaces/ansible-role-aws-sam-cli",
+
+  "dockerComposeFile": "docker-compose.yaml",
+
+  "service": "vscode",
+
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "ansible.python.interpreterPath": "/workspaces/ansible-role-aws-sam-cli-venv/bin/python",
+        "mise.checkForNewMiseVersion": false,
+        "mise.updateOpenTerminalsEnvAutomatically": true,
+        "python.defaultInterpreterPath": "/workspaces/ansible-role-aws-sam-cli-venv/bin/python",
+        "python.testing.pytestEnabled": false,
+        "python.testing.unittestEnabled": false,
+        "shellcheck.executablePath": "/home/vscode/.local/share/mise/shims/shellcheck",
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      },
+
+      "extensions": [
+        "BlueGlassBlock.better-json5",
+        "EditorConfig.EditorConfig",
+        "Gerrnperl.outline-map",
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        "GitHub.vscode-pull-request-github",
+        "Gruntfuggly.todo-tree",
+        "Tyriar.sort-lines",
+        "VisualStudioExptTeam.vscodeintellicode",
+        "donjayamanne.githistory",
+        "github.vscode-github-actions",
+        "hverlin.mise-vscode",
+        "mhutchie.git-graph",
+        "mkhl.shfmt",
+        "ms-python.python",
+        "nefrob.vscode-just-syntax",
+        "redhat.ansible",
+        "redhat.vscode-yaml",
+        "tamasfe.even-better-toml",
+        "timonwong.shellcheck",
+        "tomoki1207.selectline-statusbar",
+        "waderyan.gitblame",
+        "yzhang.markdown-all-in-one"
+      ]
+    }
+  },
+
+   "postCreateCommand": {
+    "fixWorkspaces": "sudo chown -R vscode:vscode /workspaces"
+  },
+
+  "postStartCommand": "/usr/bin/env zsh --interactive --login -c \"(rm -rf .cache || true) && (rm -rf .venv || true) && mise trust && MISE_VERBOSE=1 MISE_JOBS=1 just init\""
+}

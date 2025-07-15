@@ -1,3 +1,13 @@
-.venv/
+# General.
+.cache/
+.local/
+.tmp/
 .vscode/
+dist/
 tmp/
+
+# Ansible.
+.ansible/
+
+# Python.
+.venv/

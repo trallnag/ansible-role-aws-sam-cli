@@ -1,18 +1,31 @@
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[project]
 
-[tool.poetry]
-package-mode = false
 name = "ansible-role-aws-sam-cli"
 
-[tool.poetry.dependencies]
-python = "^3.12"
+description = ""
 
-ansible = "^11.7.0"
-docker = "^7.1.0"
-molecule = "^25.6.0"
+authors = [
+  {name = "Tim Schwenke", email = "tim@trallnag.com"},
+]
 
-ansible-lint = { version = "^25.6.1", markers = "platform_system != 'Windows'" }
+version = "0.1.0"
 
-molecule-plugins = { version = "^23.7.0", extras = ["docker"] }
+license = "ISC"
+
+license-files = ["LICENSE"]
+
+requires-python = ">= 3.12"
+
+dependencies = [
+    "ansible >= 11.7.0",
+    "ansible-lint >= 25.6.1 ; sys_platform != 'win32'",
+    "docker >= 7.1.0",
+    "molecule >= 25.6.0",
+    "molecule-plugins[docker] >= 23.7.0",
+]
+
+readme = "README.md"
+
+[tool.uv]
+
+package = false

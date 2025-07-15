@@ -1,0 +1,29 @@
+services:
+  vscode:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      secrets:
+        - github-token
+        - homebrew-github-api-token
+
+    command: sleep infinity
+
+    environment:
+      - GITHUB_TOKEN
+      - MISE_GITHUB_TOKEN
+      - HOMEBREW_GITHUB_API_TOKEN
+      - RENOVATE_GITHUB_COM_TOKEN
+
+      # Move the virtual environment out of the workspace to avoid conflicts.
+      - UV_PROJECT_ENVIRONMENT=/workspaces/ansible-role-aws-sam-cli-venv
+
+    volumes:
+      # Workspace itself.
+      - ..:/workspaces/ansible-role-aws-sam-cli:cached
+
+secrets:
+  github-token:
+    environment: GITHUB_TOKEN
+  homebrew-github-api-token:
+    environment: HOMEBREW_GITHUB_API_TOKEN
