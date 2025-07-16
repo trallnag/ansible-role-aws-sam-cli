@@ -99,6 +99,10 @@ check--ansible:
 test:
   uv run molecule test -s default
 
+# Run role against localhost.
+run:
+  uv run ansible-playbook playbook.yaml
+
 # Create release notes based on changelog.
 [group('misc')]
 create-release-notes:
