@@ -78,10 +78,6 @@ and create a release draft. Monitor the
 run and check the
 [role on Ansible Galaxy](https://galaxy.ansible.com/ui/standalone/roles/trallnag/aws_sam_cli).
 
-This triggers the
-[release workflow](https://github.com/trallnag/ansible-role-aws-sam-cli/actions/workflows/release.yaml)
-which will import the role to Ansible Galaxy and create a release draft.
-
 ## Wrap up
 
 If everything is fine, go to the release page of this project on GitHub
