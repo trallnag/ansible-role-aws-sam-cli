@@ -21,7 +21,7 @@ explicit `become: true` statements.
 See [`meta/argument_specs.yml`](./meta/argument_specs.yml).
 
 ```yaml
-aws_sam_cli_version:
+aws_sam_cli__version:
   required: false
   type: str
   default: present
@@ -30,17 +30,17 @@ aws_sam_cli_version:
     - Use special value `present` to install latest version once.
     - Use special value `latest` to always install latest version.
 
-aws_sam_cli_bin_dir:
+aws_sam_cli__bin_dir:
   required: false
   type: str
   default: /usr/local/bin
   description:
     - Bin directory. Used for `--bin-dir` parameter.
 
-aws_sam_cli_install_dir:
+aws_sam_cli__install_dir:
   required: false
   type: str
-  default: /opt/aws-sam-cli
+  default: /usr/local/aws-sam-cli
   description:
     - Install directory. Used for `--install-dir` parameter.
 ```

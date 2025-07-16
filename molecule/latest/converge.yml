@@ -14,4 +14,4 @@
       ansible.builtin.include_role:
         name: trallnag.aws_sam_cli
       vars:
-        aws_sam_cli_version: latest
+        aws_sam_cli__version: latest
