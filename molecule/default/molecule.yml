@@ -14,3 +14,17 @@ provisioner:
 
 verifier:
   name: ansible
+
+scenario:
+  test_sequence:
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - verify
+    - side_effect side_effect_1_present.yml
+    - verify verify_1_present.yml
+    - side_effect side_effect_2_latest.yml
+    - verify verify_2_latest.yml
+    - destroy

@@ -12,3 +12,5 @@
     - name: Include role
       ansible.builtin.include_role:
         name: trallnag.aws_sam_cli
+      vars:
+        aws_sam_cli__version: "1.142.0"

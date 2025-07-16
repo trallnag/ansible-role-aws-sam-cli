@@ -1,0 +1,10 @@
+- name: Side Effect 2 Latest
+  hosts: all
+  gather_facts: true
+
+  tasks:
+    - name: Include role
+      ansible.builtin.include_role:
+        name: trallnag.aws_sam_cli
+      vars:
+        aws_sam_cli__version: latest

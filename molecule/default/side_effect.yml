@@ -1,0 +1,12 @@
+# Dummy file necessary due to bug. If "default" side effect file is not present,
+# no side effects will be run. For more information, see:
+# https://github.com/ansible/molecule/issues/3617
+
+- name: Side Effect
+  hosts: all
+
+  tasks:
+    - name: Do nothing.
+      ansible.builtin.debug:
+        msg: Nothing to do.
+      changed_when: false

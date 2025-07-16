@@ -6,7 +6,6 @@
       ansible.builtin.apt:
         update_cache: true
         cache_valid_time: 600
-      when: ansible_os_family == "Debian"
       changed_when: false
 
   tasks:
@@ -14,4 +13,4 @@
       ansible.builtin.include_role:
         name: trallnag.aws_sam_cli
       vars:
-        aws_sam_cli__version: "1.115.0"
+        aws_sam_cli__version: "1.142.0"

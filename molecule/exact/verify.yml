@@ -1,27 +1,28 @@
 - name: Verify
   hosts: all
-  gather_facts: true
+
   tasks:
     - name: Get installed version
       ansible.builtin.shell:
+        executable: /usr/bin/bash
         cmd: |
           set -euo pipefail
           export PATH=/usr/local/bin:$PATH
           if command -v sam &> /dev/null; then
             sam --version | sed -n -E 's/.*version (.+)/\1/p'
           fi
-        executable: /usr/bin/bash
-      register: get_installed_version
       changed_when: false
+      register: get_installed_version
 
-    - name: Set installed version
+    - name: Set installed version fact
       ansible.builtin.set_fact:
         installed_version: >-
           {{ get_installed_version.stdout | regex_search(".+\..+\..+") }}
 
-    - name: Verify installed version correct
+    - name: Assert installed version correct
       ansible.builtin.assert:
         that:
-          - installed_version == "1.115.0"
+          - installed_version == "1.142.0"
         fail_msg: >-
-          Installed version is "{{ installed_version }}", but must be "1.115.0".
+          `installed_version` is "{{ installed_version }}",
+          but must be "1.142.0".

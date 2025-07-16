@@ -1,4 +1,4 @@
-- name: Verify
+- name: Verify 2 Latest
   hosts: all
 
   tasks:

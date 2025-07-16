@@ -85,7 +85,7 @@ which will import the role to Ansible Galaxy and create a release draft.
 ## Wrap up
 
 If everything is fine, go to the release page of this project on GitHub
-[here](https://github.com/trallnag/ansible-role-aws-sam-cli/releases) and review the
-automatically created release draft.
+[here](https://github.com/trallnag/ansible-role-aws-sam-cli/releases) and review
+the automatically created release draft.
 
 Publish the draft.
