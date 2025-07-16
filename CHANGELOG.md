@@ -11,6 +11,10 @@ and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0).
 
 - Switched permissions of temporary artifacts from `u=rw,g=r,o=r` to
   `u=rw,g=,o=`.
+- Updated public key.
+- Changed license from Apache-2.0 to ISC.
+- Added additional underscore to all variables.
+- Changed default install dir to `/usr/local/aws-sam-cli`.
 
 ## [0.1.0](https://github.com/trallnag/ansible-role-aws-sam-cli/compare/25fe7a005901b3ab35131672700edfe869ed15dc...v0.1.0) / 2024-05-20
 
