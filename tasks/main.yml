@@ -177,7 +177,7 @@
         --install-dir {{ aws_sam_cli__install_dir }}
       changed_when: true
 
-    - name: Test executable
+    - name: Check executable
       ansible.builtin.command:
         cmd: >-
           {{ aws_sam_cli__bin_dir }}/sam --version
