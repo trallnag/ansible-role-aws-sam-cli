@@ -8,7 +8,7 @@
 copier = "9.7.1"
 
 # Renovate: datasource=github-releases packageName=pre-commit/pre-commit
-pre-commit = "4.2.0"
+pre-commit = "4.6.2"
 
 # Renovate: datasource=github-releases packageName=koalaman/shellcheck
 shellcheck = "0.10.0"
